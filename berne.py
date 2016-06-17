@@ -18,10 +18,10 @@ twitter = Twython(APP_KEY, APP_SECRET,
                  OAUTH_TOKEN, OAUTH_TOKEN_SECRET)
 tweets = []
 
-f = open('bernie_tweet_data.csv', 'w')
+f = open('bernie_tweet_data.txt', 'w')
 # Requires Authentication as of Twitter API v1.1
 
-screen_name = '@BernieSanders'
+screen_name = '@realDonaldTrump'
 f.write('ScreenName,Time,Date,TimeZone,Tweet,InReplyToUserID,FavoriteCount,RetweetCount,SentimentAverage\n')
 
 try:
@@ -35,7 +35,9 @@ for tweet in user_timeline:
     #Tue Jan 12 21:15:07 +0000 2016
     timestamp = parse(tweet['created_at'])
     print timestamp.strftime('%X \t %x \t %Z')
-    print tweet['text']
+    tweet_text = tweet['text'].replace('\n', ' ').replace('\r', '')
+    tweet_text = tweet_text.replace('"', "")
+    print tweet_text
     blob = TextBlob(tweet['text'])
     sentiment = []
     for sentence in blob.sentences:
@@ -49,7 +51,7 @@ for tweet in user_timeline:
     print tweet['favorite_count']
     print tweet['retweet_count']
     print '\n'
-    f.write(screen_name+','+timestamp.strftime('%X,%x,%Z')+',"'+tweet['text'].encode('utf-8')+'",'+str(tweet['in_reply_to_user_id_str'])+','+str(tweet['favorite_count'])+','+str(tweet['retweet_count'])+','+str(sentiment_avg)+'\n') 
+    f.write(screen_name+','+timestamp.strftime('%X,%x,%Z')+',"'+tweet_text.encode('utf-8')+'",'+str(tweet['in_reply_to_user_id_str'])+','+str(tweet['favorite_count'])+','+str(tweet['retweet_count'])+','+str(sentiment_avg)+'\n') 
 # Count could be less than 200, see:
 # https://dev.twitter.com/discussions/7513
 while len(user_timeline) != 0: 
@@ -62,7 +64,9 @@ while len(user_timeline) != 0:
         # Add whatever you want from the tweet, here we just add the text
         timestamp = parse(tweet['created_at'])
         print timestamp.strftime('%X \t %x \t %Z')
-        print tweet['text']
+        tweet_text = tweet['text'].replace('\n', ' ').replace('\r', '')
+        tweet_text = tweet_text.replace('"', "")
+        print tweet_text
         blob = TextBlob(tweet['text'])
         for sentence in blob.sentences:
             print(sentence.sentiment.polarity)
@@ -72,7 +76,7 @@ while len(user_timeline) != 0:
         print tweet['favorite_count']
         print tweet['retweet_count']
         print '\n'
-        f.write(screen_name+','+timestamp.strftime('%X,%x,%Z')+',"'+tweet['text'].encode('utf-8')+'",'+str(tweet['in_reply_to_user_id_str'])+','+str(tweet['favorite_count'])+','+str(tweet['retweet_count'])+','+str(sentiment_avg)+'\n') 
+        f.write(screen_name+','+timestamp.strftime('%X,%x,%Z')+',"'+tweet_text.encode('utf-8')+'",'+str(tweet['in_reply_to_user_id_str'])+','+str(tweet['favorite_count'])+','+str(tweet['retweet_count'])+','+str(sentiment_avg)+'\n') 
     #time.sleep(300)
 # Number of tweets the user has made
 print len(tweets)
