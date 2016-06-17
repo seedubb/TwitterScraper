@@ -7,10 +7,13 @@ I recommend home-brew if running on mac : http://brew.sh/
 
 Twython:
 brew install twython
+
 Dateutil:
 pip install python-dateutil
+
 TextBlob:
 pip install text blob
+
 	Note: will install NLTK. Both are used for sentiment analysis.
 
 To run a file, run: python [candidate_name.py]
